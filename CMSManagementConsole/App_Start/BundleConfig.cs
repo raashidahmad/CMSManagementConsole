@@ -28,8 +28,8 @@ namespace CMSManagementConsole
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/css/bootstrap.min.css",
                       "~/Content/css/startmin.css",
-                      "~/Content/metisMenu.min.css",
-                      "~/Content/font-awesome/css/font-awesome.css"));
+                      "~/Content/css/metisMenu.min.css",
+                      "~/Content/css/font-awesome.min.css"));
 
             bundles.Add(new StyleBundle("~/Content/logincss").Include(
                       "~/Content/css/bootstrap.min.css",
