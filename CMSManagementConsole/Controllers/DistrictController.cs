@@ -34,6 +34,7 @@ namespace CMSManagementConsole.Controllers
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
             client.DefaultRequestHeaders.Add("Authorization", "Bearer " + accessToken);
+            ViewBag.Error = null;
             }
 
         public async Task<ActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
@@ -108,6 +109,7 @@ namespace CMSManagementConsole.Controllers
                 var data = response.Content.ReadAsStringAsync().Result;
                 district = JsonConvert.DeserializeObject<District>(data);
                 }
+            
             ViewBag.Title = "Edit District";
             return View(district);
             }
@@ -127,20 +129,18 @@ namespace CMSManagementConsole.Controllers
                 var response = await client.PutAsJsonAsync(apiBaseUrl + "/District/" + id.ToString(), district);
                 if (response.IsSuccessStatusCode)
                     {
-                    var responseMessage = await client.GetAsync(apiBaseUrl + "/District");
-                    if (responseMessage.IsSuccessStatusCode)
-                        {
-                        var responseData = responseMessage.Content.ReadAsStringAsync().Result;
-                        districts = JsonConvert.DeserializeObject<List<District>>(responseData);
-                        }
+                    return RedirectToAction("Index");
+                    }
+                else
+                    {
+                    ViewBag.Error = response.Content.ReadAsStringAsync().Result;
                     }
                 }
             catch (Exception ex)
                 {
                 ViewBag.Error = ex.Message;
-                return View("Edit");
                 }
-            return View("Index", districts);
+            return View();
             }
 
         public ActionResult Delete(string id)
