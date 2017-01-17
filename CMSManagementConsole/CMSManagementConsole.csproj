@@ -278,6 +278,8 @@
     <Content Include="Views\District\Index.cshtml" />
     <Content Include="Views\District\Create.cshtml" />
     <Content Include="Views\District\Edit.cshtml" />
+    <Content Include="Views\Category\Create.cshtml" />
+    <Content Include="Views\Category\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

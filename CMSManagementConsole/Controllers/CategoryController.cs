@@ -75,7 +75,7 @@ namespace CMSManagementConsole.Controllers
 
         public ActionResult Create()
             {
-            ViewBag.Title = "Add New Category";
+            ViewBag.Title = "New Category";
             return View();
             }
 
@@ -94,7 +94,7 @@ namespace CMSManagementConsole.Controllers
                 return RedirectToAction("Index");
                 }
             ViewBag.Error = response.ReasonPhrase;
-            return RedirectToAction("Create");
+            return View(category);
             }
 
         public async Task<ActionResult> Edit(int? id)
