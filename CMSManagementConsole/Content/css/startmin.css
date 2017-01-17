@@ -676,3 +676,33 @@ table.dataTable thead .sorting:after {
 .navbar-top-links>li>a {
     color: #fff;
 }
+
+.view-content {
+    margin-top: 35px !important;
+}
+
+.margin-top {
+    margin-top: 10px !important;
+}
+
+.action-icon-list a {
+    text-decoration: none;
+    cursor: pointer !important;
+}
+
+.action-icon-list a.btn-success {
+    text-decoration: none;
+    color: white;
+    font-size: 18px !important;
+    padding: 3px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.action-icon {
+    text-decoration: none;
+    color: white;
+    font-size: 18px !important;
+    padding: 3px !important;
+    border-radius: 5px;
+}

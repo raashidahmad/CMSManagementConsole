@@ -1,0 +1,85 @@
+﻿@model PagedList.IPagedList<CMSManagementConsole.Models.District>
+@using PagedList.Mvc;
+
+@{
+    ViewBag.Title = "Districts List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    if (ViewBag.Message != null)
+        {
+        <div class="alert alert-success">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            @ViewBag.Message
+        </div>
+        }
+}
+
+<div class="view-content">
+    <div class="row">
+        <div class="col-md-6">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#">Districts</a></li>
+                <li>
+                    @Html.ActionLink("Add New", "Create", null, null)
+                </li>
+            </ul>
+        </div>
+        <div class="col-md-6">
+            @using (Html.BeginForm("Index", "District", FormMethod.Get))
+                {
+                <div class="input-group">
+                    <input type="text" class="form-control pull-right" placeholder="Enter District Name" value="@ViewBag.SearchValue" name="SearchString">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                    </div>
+                </div>
+                }
+        </div>
+    </div>
+</div>
+
+<div class="row margin-top">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Id)
+            </th>
+            <th>Actions</th>
+        </tr>
+
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td class="action-icon-list">
+                    @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "fa fa-edit action-icon btn-primary", title = "Edit" })
+                    <a class="action-icon btn-danger" data-target="#confirm" data-toggle="modal" data-id="@item.Id" title="Delete"><i class="fa fa-trash"></i></a>
+                </td>
+            </tr>
+            }
+
+    </table>
+</div>
+
+<div class="row">
+    Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+</div>
+
+@section Scripts
+    {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Html.Partial("~/Views/Partials/_DeleteConfirmation.cshtml")
+    <script>
+        var itemToDelete;
+        $(".action-icon-list .btn-danger").click(function (e) {
+            itemToDelete = $(this).data('id');
+        });
+        $('#btnContinueDelete').click(function () {
+            window.location = 'District/Delete/' + itemToDelete;
+        });
+    </script>
+}

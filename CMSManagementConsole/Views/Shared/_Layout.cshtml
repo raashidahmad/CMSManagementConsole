@@ -87,13 +87,13 @@
                             <a href="#"><i class="fa fa-sitemap fa-fw"></i> Administration<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
-                                    <a href="#">Categories Manager</a>
+                                    @Html.ActionLink("Categories Manager", "Index", "Category")
                                 </li>
                                 <li>
-                                    <a href="#">Districts Manager</a>
+                                    @Html.ActionLink("Districts Manager", "Index", "District")
                                 </li>
                                 <li>
-                                    <a href="#">SDC Manager</a>
+                                    @Html.ActionLink("SDCs Manager", "Index", "SDC")
                                 </li>
                             </ul>
                         </li>
