@@ -4,7 +4,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -12,17 +11,18 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using PagedList;
+using System.Net;
 
 namespace CMSManagementConsole.Controllers
 {
     [AuthorizationFilter]
-    public class CategoryController : Controller
-        {
+    public class SDCController : Controller
+    {
         private string apiBaseUrl = "";
         HttpClient client;
         int pageSize;
 
-        public CategoryController()
+        public SDCController()
             {
             string accessToken = null;
             if (System.Web.HttpContext.Current.Session["accessToken"] != null)
@@ -53,48 +53,52 @@ namespace CMSManagementConsole.Controllers
 
             ViewBag.CurrentFilter = searchString;
 
-            List<Category> categories = new List<Category>();
-            var responseMessage = await client.GetAsync(apiBaseUrl + "/Category");
+            List<SDCView> sdcs = new List<SDCView>();
+            var responseMessage = await client.GetAsync(apiBaseUrl + "/SDC");
             if (responseMessage.IsSuccessStatusCode)
                 {
                 var responseData = responseMessage.Content.ReadAsStringAsync().Result;
-                categories = JsonConvert.DeserializeObject<List<Category>>(responseData);
+                sdcs = JsonConvert.DeserializeObject<List<SDCView>>(responseData);
                 }
 
             if (searchString != null)
                 {
-                categories = (from category in categories
-                              where category.Name.ToLowerInvariant().Contains(searchString.ToLowerInvariant())
-                              select category).ToList();
+                sdcs = (from sdc in sdcs
+                              where sdc.Title.ToLowerInvariant().Contains(searchString.ToLowerInvariant())
+                              select sdc).ToList();
                 }
 
             ViewBag.SearchValue = searchString;
             int pageNumber = (page ?? 1);
-            return View(categories.ToPagedList(pageNumber, pageSize));
+            return View(sdcs.ToPagedList(pageNumber, pageSize));
             }
 
         public ActionResult Create()
             {
-            ViewBag.Title = "New Category";
+            ViewBag.Title = "New SDC";
+            SelectList districts = new SelectList(new List<string>());
+            ViewBag.DistrictId = districts;
             return View();
             }
 
         [HttpPost, ActionName("Create")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(Category category)
+        public async Task<ActionResult> Create(SDC sdc)
             {
             if (!ModelState.IsValid)
                 {
                 return View("Create");
                 }
 
-            var response = await client.PostAsJsonAsync(apiBaseUrl + "/Category", category);
+            var response = await client.PostAsJsonAsync(apiBaseUrl + "/SDC", sdc);
             if (response.IsSuccessStatusCode)
                 {
                 return RedirectToAction("Index");
                 }
+            SelectList districts = new SelectList(new List<string>());
+            ViewBag.DistrictId = districts;
             ViewBag.Error = response.ReasonPhrase;
-            return View(category);
+            return View(sdc);
             }
 
         public async Task<ActionResult> Edit(int? id)
@@ -103,33 +107,35 @@ namespace CMSManagementConsole.Controllers
                 {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-            var response = await client.GetAsync(apiBaseUrl + "/Category/" + id.ToString());
-            Category category = null;
+            var response = await client.GetAsync(apiBaseUrl + "/SDC/" + id.ToString());
+            SDC sdc = null;
             if (response.IsSuccessStatusCode)
                 {
                 var data = response.Content.ReadAsStringAsync().Result;
-                category = JsonConvert.DeserializeObject<Category>(data);
+                sdc = JsonConvert.DeserializeObject<SDC>(data);
                 }
-            ViewBag.Title = "Edit Category";
-            return View(category);
+            SelectList districts = new SelectList(new List<string>());
+            ViewBag.DistrictId = districts;
+            ViewBag.Title = "Edit SDC";
+            return View(sdc);
             }
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int? id, Category category)
+        public async Task<ActionResult> Edit(int? id, SDC sdc)
             {
             ViewBag.Error = null;
-            List<Category> categories = new List<Category>();
+            List<SDC> sdcs = new List<SDC>();
             if (!ModelState.IsValid)
                 {
                 return View();
                 }
             try
                 {
-                var response = await client.PutAsJsonAsync(apiBaseUrl + "/Category/" + id.ToString(), category);
+                var response = await client.PutAsJsonAsync(apiBaseUrl + "/SDC/" + id.ToString(), sdc);
                 if (response.IsSuccessStatusCode)
                     {
-                    ViewData["Message"] = "New Category added successfully";
+                    ViewData["Message"] = "New SDC added successfully";
                     return RedirectToAction("Index");
                     }
                 else
@@ -142,7 +148,7 @@ namespace CMSManagementConsole.Controllers
                 ViewBag.Error = ex.Message;
                 return View("Edit");
                 }
-            return View("Index", categories);
+            return View("Index", sdcs);
             }
 
         public ActionResult Delete(string id)
@@ -151,10 +157,10 @@ namespace CMSManagementConsole.Controllers
                 {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
-            var response = client.DeleteAsync(apiBaseUrl + "/Category/" + id.ToString()).GetAwaiter().GetResult();
+            var response = client.DeleteAsync(apiBaseUrl + "/SDC/" + id.ToString()).GetAwaiter().GetResult();
             if (response.IsSuccessStatusCode)
                 {
-                TempData["Message"] = "Selected category deleted successfully.";
+                TempData["Message"] = "Selected sdc deleted successfully.";
                 }
             else
                 {
@@ -163,5 +169,17 @@ namespace CMSManagementConsole.Controllers
 
             return RedirectToAction("Index");
             }
-        }
+
+        public JsonResult PopulateDistricts()
+            {
+            List<District> districts = new List<District>();
+            var responseMessage = client.GetAsync(apiBaseUrl + "/district").GetAwaiter().GetResult();
+            if (responseMessage.IsSuccessStatusCode)
+                {
+                var responseData = responseMessage.Content.ReadAsStringAsync().GetAwaiter().GetResult();
+                districts = JsonConvert.DeserializeObject<List<District>>(responseData);
+                }
+            return Json(districts, JsonRequestBehavior.AllowGet);
+            }
+    }
 }
