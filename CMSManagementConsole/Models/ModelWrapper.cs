@@ -85,6 +85,7 @@ namespace CMSManagementConsole.Models
 
     public class ComplainantList
         {
+        public int Id { get; set; }
         public string NIC { get; set; }
         public string FullName { get; set; }
         }

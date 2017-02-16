@@ -748,7 +748,7 @@ table.dataTable thead .sorting:after {
 
 .tt-menu {
   width: 422px;
-  margin: 12px 0;
+  margin: 1px 0px 6px 5px;
   padding: 8px 0;
   background-color: #fff;
   border: 1px solid #ccc;
@@ -762,7 +762,7 @@ table.dataTable thead .sorting:after {
 }
 
 .tt-suggestion {
-  padding: 3px 20px;
+  padding: 3px 10px;
   font-size: 18px;
   line-height: 24px;
   color: #999 !important;
@@ -770,7 +770,7 @@ table.dataTable thead .sorting:after {
 
 .tt-suggestion:hover {
   cursor: pointer;
-  color: #fff;
+  color: #fff !important;
   background-color: #0097cf;
 }
 
