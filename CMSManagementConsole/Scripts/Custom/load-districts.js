@@ -1,5 +1,4 @@
 ﻿var districts = $('#DistrictId');
-
 $(function () {
     //Load Districts
     $.getJSON(districtsUrl, {}, function (response) {
@@ -10,5 +9,7 @@ $(function () {
                 text: item.Name
             }));
         });
+        districts.find('option:eq(0)').prop('selected', true);
+        loadSDCs();
     });
 });

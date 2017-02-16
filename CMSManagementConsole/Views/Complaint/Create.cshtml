@@ -1,0 +1,132 @@
+﻿@model CMSManagementConsole.Models.NewComplaint
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="view-content">
+
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+
+                <li>
+                    @Html.ActionLink("Complaint List", "Index", null, null)
+                </li>
+                <li class="active"><a href="#">New Complaint</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row margin-top">
+        @using (Html.BeginForm())
+            {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.CategoryId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-10 typeahead">
+                        @Html.LabelFor(model => model.ComplainantId, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <input type="text" id="typeahead" class="typeahead form-control" placeholder="Enter NIC" />
+                        @Html.ValidationMessageFor(model => model.ComplainantId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div id="user-info">
+                    <div class="form-group">
+
+                    </div>
+                </div>
+                
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </div>
+            </div>
+            }
+    </div>
+</div>
+
+@section Scripts
+    {
+    @Scripts.Render("~/Scripts/typeahead.js");
+    @Scripts.Render("~/Scripts/Custom/load-categories.js");
+
+    <script>
+        var complainantsUrl = '@Url.Action("GetComplainants", "complaint")';
+        var categoriesUrl = '@Url.Action("PopulateCategories", "complaint")';
+        var complainants = {};
+        var complainantsList = {};
+        var complainantId = 0;
+
+        $(function () {
+
+            //Get Complainants List
+            $.ajax({
+                url: complainantsUrl,
+                dataType: 'json',
+                type: "GET",
+                contentType: 'application/json; charset=utf-8',
+                beforeSend: function () {
+                },
+                complete: function () {
+                },
+                success: function (response) {
+                    if (response.length > 0) {
+                        complainants = response;
+
+                        //Setting up typeahead
+                        complainantsList = new Bloodhound({
+                            datumTokenizer: Bloodhound.tokenizers.obj.whitespace("NIC"),
+                            queryTokenizer: Bloodhound.tokenizers.whitespace,
+                            local: complainants
+                        });
+                        complainantsList.initialize();
+
+                        $("#typeahead").typeahead({
+                            hint: true,
+                            highlight: true,
+                            minLength: 2
+                        },
+                        {
+                            name: "result",
+                            displayKey: "FullName",
+                            source: complainantsList.ttAdapter()
+                        }).bind("typeahead:selected", function (obj, datum, name) {
+                            complainantId = datum.Id;
+                        });
+                    }
+                },
+                error: function (err) {
+                }
+            });
+
+            $('#typeahead').blur(function () {
+
+            });
+
+        });
+        
+    </script>
+    }
