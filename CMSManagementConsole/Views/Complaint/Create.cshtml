@@ -38,22 +38,57 @@
                 <div class="form-group">
                     @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.TextArea("Description", new { rows = 5, columns = 100, @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
-                <div class="form-group">
-                    <div class="col-md-10 typeahead">
-                        @Html.LabelFor(model => model.ComplainantId, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div id="existing-user" class="form-group">
+                    <label class="col-md-2 control-label">Complainant</label>
+                    <div class="col-md-10">
                         <input type="text" id="typeahead" class="typeahead form-control" placeholder="" />
-                        @Html.ValidationMessageFor(model => model.ComplainantId, "", new { @class = "text-danger" })
                     </div>
                 </div>
 
                 <div id="user-info" class="form-group-sm col-md-offset-2" style="display: none;">
                     <table id="tbl-info" class="table table-striped">
                     </table>
+                </div>
+
+                <div id="new-user" style="display: none;">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label"></label>
+                        <div class="col-md-10">
+                            <div class="custom-alert alert-success">
+                                <!--<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>-->
+                                <strong>Provide Required Information for the new User</strong>&nbsp;
+                                <span class="pull-right">
+                                    <button id="btn-cancel-user" type="button" class="btn btn-warning">Cancel</button>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FullName, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.FullName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.FullName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NIC, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.NIC, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.NIC, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Mobile, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Mobile, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -109,9 +144,10 @@
                         },
                         {
                             name: "result",
-                            displayKey: "NIC",
+                            displayKey: "FullName",
                             source: complainantsList.ttAdapter()
                         }).bind("typeahead:selected", function (obj, datum, name) {
+                            complainantId = datum.Id;
                             showSelectedUser(datum.Id, datum.FullName, datum.NIC);
                         });
                     }
@@ -121,20 +157,38 @@
             });
 
             $('#tbl-info').on('click', '.btn-danger', function (e) {
-                //var tr = $(e.currentTarget).closest('tr');
-                //tr.remove();
                 $('#tbl-info').empty();
                 $('#user-info').hide();
+                $('#typeahead').focus();
+                complainantId = 0;
+            });
+
+            $('#typeahead').blur(function () {
+                var txt = $('#typeahead');
+                if (complainantId == 0 && txt.val().length != 0) {
+                    $('#existing-user').hide();
+                    $('#new-user').show(1000);
+                    var nic = $('#typeahead').val();
+                    $('#NIC').val(nic);
+                    $('#typeahead').typeahead('val', null);
+                    $('#FullName').focus();
+                }
+            });
+
+            $('#btn-cancel-user').click(function () {
+                $('#new-user').hide();
+                $('#existing-user').show(1000);
+                $('#typeahead').focus();
             });
 
         });
         
         //List the selected user
         function showSelectedUser(id, fullName, nic) {
+            fullName = fullName.split('-')[1];
             var trArr = Array();
             trArr[0] = '<tr><th>Id</th><th>Full Name</th><th>NIC</th><th>Remove</th></tr>';
             trArr[1] = '<tr><td>' + id + '</td><td>' + fullName + '</td><td>' + nic + '</td><td><button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button></td></tr>';
-            //$('#tbl-info tr:last').after(tr);
             var trs = trArr.join('');
             $('#tbl-info').append(trs);
             $('#user-info').show();

@@ -21,13 +21,16 @@ namespace CMSManagementConsole.Models
     public class Role
         {
         public string Id { get; set; }
+        [Required, MinLength(5)]
         public string Name { get; set; }
         }
 
     public class SDC
         {
         public int Id { get; set; }
+        [Required, MinLength(5)]
         public string Title { get; set; }
+        [Required]
         public int DistrictId { get; set; }
         }
 
@@ -75,11 +78,18 @@ namespace CMSManagementConsole.Models
             }
         [Display(Name= "Complainant")]
         public int ComplainantId { get; set; }
+        [Required]
         [Display(Name= "Category")]
         public int CategoryId { get; set; }
-        [Display(Name= "SDC")]
         public int SDCId { get; set; }
+        [Required]
         public string Description { get; set; }
+        [MinLength(5)]
+        public string FullName { get; set; }
+        [RegularExpression("^\\d{5}-\\d{7}-\\d{1}", ErrorMessage = "Enter valid NIC Number in the format (00000-0000000-0)")]
+        public string NIC { get; set; }
+        [RegularExpression("^\\d{3}-\\d{7}", ErrorMessage="Enter valid Mobile Number in the format (0000-0000000)")]
+        public string Mobile { get; set; }
         public List<string> Documents { get; set; }
         }
 

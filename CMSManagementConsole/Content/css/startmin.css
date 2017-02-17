@@ -707,12 +707,20 @@ table.dataTable thead .sorting:after {
     border-radius: 5px;
 }
 
+.custom-alert {
+    padding: 20px;
+    margin-bottom: 5px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
 /*For typeahead*/
 .typeahead,
 .tt-query,
 .tt-hint {
-    font-size: 18px;
+  font-size: 18px;
   width: 100%;
+  padding: 8px 20px;
   /*height: 30px;
   padding: 8px 12px;
   font-size: 24px;
@@ -725,11 +733,12 @@ table.dataTable thead .sorting:after {
 }
 
 #typeahead {
-    margin-left: 6px;
+  width: 50vw;
 }
 
 .typeahead {
   background-color: #fff;
+  padding: 6px 12px !important;
 }
 
 .typeahead:focus {
@@ -743,12 +752,13 @@ table.dataTable thead .sorting:after {
 }
 
 .tt-hint {
-  color: #999
+  color: #999;
+  padding: 6px 12px !important;
 }
 
 .tt-menu {
-  width: 422px;
-  margin: 1px 0px 6px 5px;
+  width: 500px;
+  margin: 1px 0px 6px 2px;
   padding: 8px 0;
   background-color: #fff;
   border: 1px solid #ccc;

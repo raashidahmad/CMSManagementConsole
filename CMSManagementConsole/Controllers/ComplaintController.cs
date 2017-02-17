@@ -79,13 +79,15 @@ namespace CMSManagementConsole.Controllers
             return View();
             }
 
-        [HttpPost, ActionName("Create")]
+        [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(NewComplaint complaint)
             {
+            SelectList categories = new SelectList(new List<string>());
+            ViewBag.CategoryId = categories;
             if (!ModelState.IsValid)
                 {
-                return View("Create");
+                return View(complaint);
                 }
 
             var response = await client.PostAsJsonAsync(apiBaseUrl + "/Complaint", complaint);
@@ -93,8 +95,7 @@ namespace CMSManagementConsole.Controllers
                 {
                 return RedirectToAction("Index");
                 }
-            SelectList categories = new SelectList(new List<string>());
-            ViewBag.CategoryId = categories;
+            
             ViewBag.Error = response.ReasonPhrase;
             return View(complaint);
             }
