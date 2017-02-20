@@ -81,6 +81,7 @@ namespace CMSManagementConsole.Models
         [Required]
         [Display(Name= "Category")]
         public int CategoryId { get; set; }
+        public int DistrictId { get; set; }
         public int SDCId { get; set; }
         [Required]
         public string Description { get; set; }

@@ -6,7 +6,6 @@
 }
 
 <div class="view-content">
-
     <div class="row">
         <div class="col-md-12">
             <ul class="nav nav-tabs">
@@ -19,14 +18,21 @@
         </div>
     </div>
 
+    
+
     <div class="row margin-top">
+        <div id="error" class="alert alert-danger alert-dismissable" style="display: none;">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <span id="error-msg"></span>
+        </div>
+
         @using (Html.BeginForm())
             {
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
+                @Html.Hidden("ComplainantId");
                 <div class="form-group">
                     @Html.LabelFor(model => model.CategoryId, htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
@@ -93,7 +99,7 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <input id="btn-submit" type="submit" value="Create" class="btn btn-primary" />
                     </div>
                 </div>
             </div>
@@ -148,6 +154,7 @@
                             source: complainantsList.ttAdapter()
                         }).bind("typeahead:selected", function (obj, datum, name) {
                             complainantId = datum.Id;
+                            $('#ComplainantId').val(complainantId);
                             showSelectedUser(datum.Id, datum.FullName, datum.NIC);
                         });
                     }
@@ -161,6 +168,7 @@
                 $('#user-info').hide();
                 $('#typeahead').focus();
                 complainantId = 0;
+                $('#ComplainantId').val(complainantId);
             });
 
             $('#typeahead').blur(function () {
@@ -179,6 +187,16 @@
                 $('#new-user').hide();
                 $('#existing-user').show(1000);
                 $('#typeahead').focus();
+                complainantId = 0;
+                $('#ComplainantId').val(complainantId);
+            });
+
+            $('#btn-submit').click(function () {
+                if (complainantId != 0) {
+                    $('#NIC').val('');
+                    $('#FullName').val('');
+                    $('#Mobile').val('');
+                }
             });
 
         });

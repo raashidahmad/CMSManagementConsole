@@ -56,7 +56,6 @@ namespace CMSManagementConsole.Controllers
                  });
 
                 HttpResponseMessage responseMessage = await client.PostAsync("/Token", formContent);
-
                 //get access token from response body
                 var responseJson = await responseMessage.Content.ReadAsStringAsync();
                 var jObject = JObject.Parse(responseJson);
@@ -64,6 +63,14 @@ namespace CMSManagementConsole.Controllers
                 if (jObject.GetValue("access_token") != null)
                     {
                     accessToken = jObject.GetValue("access_token").ToString();
+                    responseMessage = await client.GetAsync("accounts/user/" + model.Username);
+                    if (responseMessage.IsSuccessStatusCode)
+                        {
+                        responseJson = await responseMessage.Content.ReadAsStringAsync();
+                        jObject = JObject.Parse(responseJson);
+                        Session["DistrictId"] = jObject.GetValue("DistrictId");
+                        Session["SdcId"] = jObject.GetValue("SDCId");
+                        }
                     }
                 else
                     {

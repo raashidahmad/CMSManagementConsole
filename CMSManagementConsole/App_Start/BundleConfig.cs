@@ -31,6 +31,10 @@ namespace CMSManagementConsole
                       "~/Content/css/metisMenu.min.css",
                       "~/Content/css/font-awesome.min.css"));
 
+            bundles.Add(new StyleBundle("~/Content/fileupload").Include(
+                    "~/Content/css/jquery.fileupload.css"
+                ));
+
             bundles.Add(new StyleBundle("~/Content/logincss").Include(
                       "~/Content/css/bootstrap.min.css",
                       "~/Content/bootstrap-theme.min.css",

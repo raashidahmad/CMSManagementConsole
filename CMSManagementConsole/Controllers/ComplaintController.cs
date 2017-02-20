@@ -90,19 +90,32 @@ namespace CMSManagementConsole.Controllers
                 return View(complaint);
                 }
 
+            complaint.DistrictId = Convert.ToInt32(System.Web.HttpContext.Current.Session["DistrictId"].ToString());
+            complaint.SDCId = Convert.ToInt32(System.Web.HttpContext.Current.Session["SDCId"].ToString());
             var response = await client.PostAsJsonAsync(apiBaseUrl + "/Complaint", complaint);
             if (response.IsSuccessStatusCode)
                 {
-                return RedirectToAction("Index");
+                var cId = response.Content.ReadAsStringAsync().Result;
+                return RedirectToAction("Upload", new { id =  cId});
                 }
             
-            ViewBag.Error = response.ReasonPhrase;
+            ViewBag.Error = response.Content.ReadAsStringAsync().Result;
             return View(complaint);
+            }
+
+        public ActionResult Upload(int? id)
+            {
+            if (id == 0)
+                {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+            ViewBag.ComplaintId = id;
+            return View();
             }
 
         public async Task<ActionResult> Edit(int? id)
             {
-            if (id == null)
+            if (id == 0)
                 {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
