@@ -109,6 +109,7 @@ namespace CMSManagementConsole.Controllers
                 {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
                 }
+            ViewBag.Domain = this.apiBaseUrl;
             ViewBag.ComplaintId = id;
             return View();
             }

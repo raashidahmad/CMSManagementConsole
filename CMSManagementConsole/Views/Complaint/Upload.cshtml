@@ -2,7 +2,7 @@
     ViewBag.Title = "Upload";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@Styles.Render("~/Content/fileupload")
+@Styles.Render("~/Content/fileuploadcss")
 
 <div class="view-content">
     <div class="row">
@@ -23,7 +23,7 @@
             <span id="error-msg"></span>
         </div>
 
-        <form id="fileupload" action="//jquery-file-upload.appspot.com/" method="POST" enctype="multipart/form-data">
+        <form id="fileupload" action="@ViewBag.Domain/Complaint/Upload" method="POST" enctype="multipart/form-data">
             <!-- Redirect browsers with JavaScript disabled to the origin page -->
             <!--<noscript><input type="hidden" name="redirect" value="https://blueimp.github.io/jQuery-File-Upload/"></noscript>-->
             <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
@@ -66,4 +66,17 @@
         </form>
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        var domain = '@ViewBag.Domain' + 'File?id=@ViewBag.ComplaintId';
+        var uploadUrl = domain;
+    </script>
+    
+    @Scripts.Render("~/bundles/fileuploadjs")
+    @Scripts.Render("~/Scripts/Custom/file-upload.js")
+    @Html.Partial("~/Views/Partials/_Files.cshtml")
+}
+
 
