@@ -58,6 +58,17 @@
             $(this).fileupload('option', 'done')
                 .call(this, $.Event('done'), { result: result });
         });
+
+        //Load Uploaded Files
+        $.ajax({
+            type: 'GET',
+            contentType: "application/json; charset=utf-8",
+            url: domain,
+            success: function (data) {
+                $('#fileupload').fileupload('option', 'done').call($('#fileupload'), $.Event('done'), { result: { files: data } })
+                $('#fileupload').removeClass('fileupload-processing');
+            }
+        });
     }
 
 });

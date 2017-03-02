@@ -74,8 +74,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Dated)
+                </td>
                 <td class="action-icon-list">
-                    @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "fa fa-edit action-icon btn-primary", title = "Edit" })
+                    @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "fa fa-edit action-icon btn-primary", title = "Edit Complaint" })
+                    @Html.ActionLink(" ", "Upload", new { id = item.Id }, new { @class = "fa fa-file action-icon btn-success", title = "Manage Documents" })
                 </td>
             </tr>
             }
