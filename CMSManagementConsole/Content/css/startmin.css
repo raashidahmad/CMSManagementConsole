@@ -801,3 +801,18 @@ table.dataTable thead .sorting:after {
 .panel-custom-height {
     height: 54px !important;
 }
+
+/*Changin tablet color*/
+.nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
+    background-color: #337ab7;
+    border:1px solid #2e6da4;
+    color: #fff;
+}
+
+.table tr td, th {
+    text-align: center;
+}
+
+.panel-with-tbl {
+    padding: 0px !important;
+}

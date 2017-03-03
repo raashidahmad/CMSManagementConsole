@@ -25,7 +25,7 @@
             </ul>
         </div>
         <div class="col-md-6">
-            @using (Html.BeginForm("Index", "Complaint", FormMethod.Get))
+            @using (Html.BeginForm("Index", "Complaints List", FormMethod.Get))
                 {
                 <div class="input-group">
                     <input type="text" class="form-control pull-right" placeholder="Enter Complainant Name" value="@ViewBag.SearchValue" name="SearchString">
@@ -39,7 +39,7 @@
 </div>
 
 <div class="row margin-top">
-    <table class="table">
+    <table class="table table-striped">
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().Id)
@@ -51,12 +51,12 @@
                 @Html.DisplayNameFor(model => model.FirstOrDefault().SDC)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.FirstOrDefault().Description)
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Complainant)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.FirstOrDefault().Dated)
             </th>
-            <th>Actions</th>
+            <th>More</th>
         </tr>
 
         @foreach (var item in Model)
@@ -72,18 +72,18 @@
                     @Html.DisplayFor(modelItem => item.SDC)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @Html.DisplayFor(modelItem => item.Complainant)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Dated)
                 </td>
                 <td class="action-icon-list">
-                    @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "fa fa-edit action-icon btn-primary", title = "Edit Complaint" })
+                    @Html.ActionLink(" ", "Details", new { id = item.Id }, new { @class = "fa fa-eye action-icon btn-primary", title = "View Details" })
+                    @Html.ActionLink(" ", "Edit", new { id = item.Id }, new { @class = "fa fa-edit action-icon btn-info", title = "Edit Complaint" })
                     @Html.ActionLink(" ", "Upload", new { id = item.Id }, new { @class = "fa fa-file action-icon btn-success", title = "Manage Documents" })
                 </td>
             </tr>
             }
-
     </table>
 </div>
 
@@ -103,7 +103,7 @@
             itemToDelete = $(this).data('id');
         });
         $('#btnContinueDelete').click(function () {
-            window.location = 'District/Delete/' + itemToDelete;
+            window.location = 'Complaint/Delete/' + itemToDelete;
         });
     </script>
 }

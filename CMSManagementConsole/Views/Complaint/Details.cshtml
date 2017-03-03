@@ -1,0 +1,74 @@
+﻿@model CMSManagementConsole.Models.ComplaintFullView
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="view-content">
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+
+                <li>
+                    @Html.ActionLink("Complaint List", "Index", null, null)
+                </li>
+                <li class="active"><a href="#">Complaint Details</a></li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="row margin-top">
+
+        <div class="panel panel-info">
+            <div class="panel-heading"><strong>Complaint Information (@Html.DisplayFor(model => model.Dated))</strong></div>
+            <div class="panel-body panel-with-tbl">
+                <table class="table table-striped">
+                    <tr>
+                        <td><strong>Id</strong></td>
+                        <td>@Html.DisplayFor(model => model.Id)</td>
+                        <td><strong>Category</strong></td>
+                        <td>@Html.DisplayFor(model => model.Category)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>District</strong></td>
+                        <td>@Html.DisplayFor(model => model.District)</td>
+                        <td><strong>SDC</strong></td>
+                        <td>@Html.DisplayFor(model => model.SDC)</td>
+                    </tr>
+                    <tr class="success">
+                        <td colspan="4">
+                            <strong class="pull-left">Complainant Information</strong>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><strong>Name</strong></td>
+                        <td>@Html.DisplayFor(model => model.Complainant)</td>
+                        <td><strong>NIC</strong></td>
+                        <td>@Html.DisplayFor(model => model.ComplainantNIC)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mobile</strong></td>
+                        <td>@Html.DisplayFor(model => model.ComplainantMobile)</td>
+                        <td><strong>Address</strong></td>
+                        <td>@Html.DisplayFor(model => model.ComplainantAddress)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Description</strong></td>
+                        <td colspan="3">@Html.DisplayFor(model => model.Description)</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <div class="panel panel-info">
+            <div class="panel-heading"><strong>Uploaded Documents</strong></div>
+            <div class="panel-body panel-with-tbl">
+                <table class="table table-striped">
+                    
+                </table>
+            </div>
+        </div>
+        
+    </div>
+</div>

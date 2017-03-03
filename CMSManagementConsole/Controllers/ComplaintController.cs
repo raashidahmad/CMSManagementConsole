@@ -73,28 +73,82 @@ namespace CMSManagementConsole.Controllers
 
         public ActionResult Create()
             {
+            ViewBag.IsError = false;
             ViewBag.Title = "New Complaint";
             SelectList categories = new SelectList(new List<string>());
             ViewBag.CategoryId = categories;
             return View();
             }
 
+        public async Task<ActionResult> Details(int id)
+            {
+            int validId = 0;
+            bool valid = int.TryParse(id.ToString(), out validId);
+            
+            if (!valid || validId == 0)
+                {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                }
+
+            ComplaintFullView complaint = new ComplaintFullView();
+            var responseMessage = await client.GetAsync(apiBaseUrl + "/Complaint/" + id);
+            if (responseMessage.IsSuccessStatusCode)
+                {
+                var responseData = responseMessage.Content.ReadAsStringAsync().Result;
+                complaint = JsonConvert.DeserializeObject<ComplaintFullView>(responseData);
+                if (complaint == null)
+                    ViewBag.Error = responseMessage.Content.ReadAsStringAsync().Result;
+                }
+            else
+                {
+                ViewBag.Error = responseMessage.Content.ReadAsStringAsync().Result;
+                }
+            return View(complaint);
+            }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(NewComplaint complaint)
             {
+            ViewBag.IsError = false;
             SelectList categories = new SelectList(new List<string>());
             ViewBag.CategoryId = categories;
-            if (!ModelState.IsValid)
-                {
-                return View(complaint);
-                }
-
             complaint.DistrictId = Convert.ToInt32(System.Web.HttpContext.Current.Session["DistrictId"].ToString());
             complaint.SDCId = Convert.ToInt32(System.Web.HttpContext.Current.Session["SDCId"].ToString());
+            
+            if (!ModelState.IsValid)
+                {
+                ViewBag.IsError = true;
+                return View(complaint);
+                }
+            
+            //Check if new complainant
+            if (complaint.ComplainantId == 0)
+                {
+                var complainant = new Complainant()
+                {
+                    FullName = complaint.FullName,
+                    NIC = complaint.NIC,
+                    Mobile = complaint.Mobile,
+                    Address = complaint.Address,
+                    ContactMedium = Complainant.CommunicationMedium.SMS
+                };
+                var complainantResponse = await client.PostAsJsonAsync(apiBaseUrl + "/Complainant", complainant);
+                if (complainantResponse.IsSuccessStatusCode)
+                    {
+                    var resultStr = complainantResponse.Content.ReadAsStringAsync().Result;
+                    int newId = 0;
+                    bool isComplainant = int.TryParse(resultStr, out newId);
+                    if (isComplainant)
+                        complaint.ComplainantId = newId;
+
+                    }
+                }
+
             var response = await client.PostAsJsonAsync(apiBaseUrl + "/Complaint", complaint);
             if (response.IsSuccessStatusCode)
                 {
+                
                 var cId = response.Content.ReadAsStringAsync().Result;
                 return RedirectToAction("Upload", new { id =  cId});
                 }
@@ -182,19 +236,7 @@ namespace CMSManagementConsole.Controllers
 
             return RedirectToAction("Index");
             }
-
-        /*public JsonResult PopulateDistricts()
-            {
-            List<District> districts = new List<District>();
-            var responseMessage = client.GetAsync(apiBaseUrl + "/district").GetAwaiter().GetResult();
-            if (responseMessage.IsSuccessStatusCode)
-                {
-                var responseData = responseMessage.Content.ReadAsStringAsync().GetAwaiter().GetResult();
-                districts = JsonConvert.DeserializeObject<List<District>>(responseData);
-                }
-            return Json(districts, JsonRequestBehavior.AllowGet);
-            }*/
-
+       
         public JsonResult PopulateCategories()
             {
             List<Category> categories = new List<Category>();

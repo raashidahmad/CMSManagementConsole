@@ -22,7 +22,13 @@
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
             <span id="error-msg"></span>
         </div>
-
+        <div class="row">
+            <div class="col-md-12">
+                <div class="custom-alert alert-success">
+                    <strong>Documents List for Complaint No: @ViewBag.ComplaintId</strong>&nbsp;
+                </div>
+            </div>
+        </div>
         <form id="fileupload" action="@ViewBag.Domain/Complaint/Upload" method="POST" enctype="multipart/form-data">
             <!-- Redirect browsers with JavaScript disabled to the origin page -->
             <!--<noscript><input type="hidden" name="redirect" value="https://blueimp.github.io/jQuery-File-Upload/"></noscript>-->

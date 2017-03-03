@@ -3,6 +3,7 @@
 @{
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    string displayStyle = "display: none;";
 }
 
 <div class="view-content">
@@ -18,8 +19,12 @@
         </div>
     </div>
 
+    @if (ViewBag.IsError)
+        {
+        displayStyle = "display: block";
+        }
     
-
+    @*Html.ValidationSummary(false, "", new { @class = "text-danger" })*@
     <div class="row margin-top">
         <div id="error" class="alert alert-danger alert-dismissable" style="display: none;">
             <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
@@ -61,7 +66,7 @@
                     </table>
                 </div>
 
-                <div id="new-user" style="display: none;">
+                <div id="new-user" style="@displayStyle">
                     <div class="form-group">
                         <label class="col-md-2 control-label"></label>
                         <div class="col-md-10">
@@ -95,6 +100,20 @@
                             @Html.ValidationMessageFor(model => model.Mobile, "", new { @class = "text-danger" })
                         </div>
                     </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ContactMedium, "Contact Medium", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-10">
+                            @Html.EnumDropDownListFor(model => model.ContactMedium, null, htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.ContactMedium, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -120,7 +139,8 @@
         var complainantId = 0;
 
         $(function () {
-
+            $('#ComplainantId').val(complainantId);
+            $('#ContactMedium').val(1);
             //Get Complainants List
             $.ajax({
                 url: complainantsUrl,
@@ -180,6 +200,7 @@
                     $('#NIC').val(nic);
                     $('#typeahead').typeahead('val', null);
                     $('#FullName').focus();
+                    $('#ComplainantId').val(complainantId);
                 }
             });
 

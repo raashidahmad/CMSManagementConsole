@@ -317,6 +317,7 @@
     <Content Include="Views\Complaint\Create.cshtml" />
     <Content Include="Views\Complaint\Upload.cshtml" />
     <Content Include="Views\Partials\_Files.cshtml" />
+    <Content Include="Views\Complaint\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

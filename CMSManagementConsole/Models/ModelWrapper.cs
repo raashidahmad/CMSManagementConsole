@@ -53,13 +53,42 @@ namespace CMSManagementConsole.Models
             }
 
         public int Id { get; set; }
-        public int ComplainantId { get; set; }
         public string Complainant { get; set; }
         public int CategoryId { get; set; }
         public string Category { get; set; }
-        public int DistrictId { get; set; }
         public string District { get; set; }
-        public string SDCId { get; set; }
+        public string SDC { get; set; }
+        public string Description { get; set; }
+        public DateTime Dated { get; set; }
+        public ComplaintStatus Status { get; set; }
+        public List<string> Documents { get; set; }
+        }
+
+    public class ComplaintFullView
+        {
+        public enum ComplaintStatus : int
+            {
+            InQueue = 1,
+            UnderProcess = 2,
+            Completed = 3,
+            Closed = 4
+            }
+
+        public enum CommunicationMedium : int
+            {
+            SMS = 1,
+            Phone = 2
+            }
+
+        public int Id { get; set; }
+        public int ComplainantId { get; set; }
+        public string Complainant { get; set; }
+        public string ComplainantNIC { get; set; }
+        public string ComplainantMobile { get; set; }
+        public string ComplainantAddress { get; set; }
+        public CommunicationMedium ContactMedium { get; set; }
+        public string Category { get; set; }
+        public string District { get; set; }
         public string SDC { get; set; }
         public string Description { get; set; }
         public DateTime Dated { get; set; }
@@ -76,6 +105,12 @@ namespace CMSManagementConsole.Models
             Completed = 3,
             Closed = 4
             }
+        public enum CommunicationMedium : int
+            {
+            SMS = 1,
+            Phone = 2
+            }
+
         [Display(Name= "Complainant")]
         public int ComplainantId { get; set; }
         [Required]
@@ -87,10 +122,12 @@ namespace CMSManagementConsole.Models
         public string Description { get; set; }
         [MinLength(5)]
         public string FullName { get; set; }
-        [RegularExpression("^\\d{5}-\\d{7}-\\d{1}", ErrorMessage = "Enter valid NIC Number in the format (00000-0000000-0)")]
+        [RegularExpression("^\\d{14}", ErrorMessage = "Enter valid NIC Number in the format (0000000000000)")]
         public string NIC { get; set; }
-        [RegularExpression("^\\d{3}-\\d{7}", ErrorMessage="Enter valid Mobile Number in the format (0000-0000000)")]
+        [RegularExpression("^\\d{4}-\\d{7}", ErrorMessage="Enter valid Mobile Number in the format (0000-0000000)")]
         public string Mobile { get; set; }
+        public string Address { get; set; }
+        public CommunicationMedium ContactMedium { get; set; }
         public List<string> Documents { get; set; }
         }
 
@@ -151,6 +188,22 @@ namespace CMSManagementConsole.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+        }
+
+    public class Complainant
+        {
+        public enum CommunicationMedium : int
+            {
+            SMS = 1,
+            Phone = 2
+            }
+
+        public int Id { get; set; }
+        public string FullName { get; set; }
+        public string NIC { get; set; }
+        public string Address { get; set; }
+        public string Mobile { get; set; }
+        public CommunicationMedium ContactMedium { get; set; }
         }
 
     public class FilterIds
