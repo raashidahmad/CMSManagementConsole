@@ -8,9 +8,11 @@
     <div class="row">
         <div class="col-md-12">
             <ul class="nav nav-tabs">
-
                 <li>
                     @Html.ActionLink("Complaint List", "Index", null, null)
+                </li>
+                <li>
+                    @Html.ActionLink("Complaint Details", "Details", new { id = ViewBag.ComplaintId }, null)
                 </li>
                 <li class="active"><a href="#">Upload Documents</a></li>
             </ul>

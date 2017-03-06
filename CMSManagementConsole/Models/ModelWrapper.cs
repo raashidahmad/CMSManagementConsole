@@ -54,6 +54,8 @@ namespace CMSManagementConsole.Models
 
         public int Id { get; set; }
         public string Complainant { get; set; }
+        public string NIC { get; set; }
+        public string Mobile { get; set; }
         public int CategoryId { get; set; }
         public string Category { get; set; }
         public string District { get; set; }
@@ -93,7 +95,7 @@ namespace CMSManagementConsole.Models
         public string Description { get; set; }
         public DateTime Dated { get; set; }
         public ComplaintStatus Status { get; set; }
-        public List<string> Documents { get; set; }
+        public List<ViewDataUploadFilesResult> Documents { get; set; }
         }
 
     public class NewComplaint
@@ -211,14 +213,15 @@ namespace CMSManagementConsole.Models
         public int Id { get; set; }
         }
 
+    //Properties starting with small letters because of its dependency on a library
     public class ViewDataUploadFilesResult
         {
-        public string Name { get; set; }
-        public int Size { get; set; }
-        public string Type { get; set; }
-        public string Url { get; set; }
-        public string DeleteUrl { get; set; }
-        public string ThumbnailUrl { get; set; }
-        public string DeleteType { get; set; }
+        public string name { get; set; }
+        public int size { get; set; }
+        public string type { get; set; }
+        public string url { get; set; }
+        public string deleteUrl { get; set; }
+        public string thumbnailUrl { get; set; }
+        public string deleteType { get; set; }
         }
     }

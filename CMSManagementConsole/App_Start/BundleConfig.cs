@@ -57,6 +57,12 @@ namespace CMSManagementConsole
                     "~/Scripts/blueimp-gallery2/js/jquery.blueimp-gallery.js"
                 ));
 
+            bundles.Add(new ScriptBundle("~/bundles/blueimplist").Include(//Blueimp Gallery 2 
+                        "~/Scripts/blueimp-gallery2/js/blueimp-gallery.js",
+                        "~/Scripts/blueimp-gallery2/js/blueimp-gallery-video.js",
+                        "~/Scripts/blueimp-gallery2/js/blueimp-gallery-indicator.js",
+                        "~/Scripts/blueimp-gallery2/js/jquery.blueimp-gallery.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/css/bootstrap.min.css",
                       "~/Content/css/startmin.css",

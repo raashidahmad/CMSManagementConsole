@@ -816,3 +816,8 @@ table.dataTable thead .sorting:after {
 .panel-with-tbl {
     padding: 0px !important;
 }
+
+.highlight-font {
+    color: #337ab7;
+    font-size: 11px;
+}

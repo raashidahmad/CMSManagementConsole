@@ -50,7 +50,6 @@ namespace CMSManagementConsole.Controllers
                 }
 
             ViewBag.CurrentFilter = searchString;
-
             List<ComplaintView> complaints = new List<ComplaintView>();
             var responseMessage = await client.GetAsync(apiBaseUrl + "/Complaint");
             if (responseMessage.IsSuccessStatusCode)
@@ -62,7 +61,10 @@ namespace CMSManagementConsole.Controllers
             if (searchString != null)
                 {
                 complaints = (from complaint in complaints
-                              where complaint.Description.ToLowerInvariant().Contains(searchString.ToLowerInvariant())
+                              where 
+                              complaint.Complainant.ToLower().Contains(searchString.ToLower()) ||
+                              complaint.Mobile.ToLower().Contains(searchString.ToLower()) ||
+                              complaint.NIC.ToLower().Contains(searchString.ToLower())
                               select complaint).ToList();
                 }
 
@@ -98,6 +100,17 @@ namespace CMSManagementConsole.Controllers
                 complaint = JsonConvert.DeserializeObject<ComplaintFullView>(responseData);
                 if (complaint == null)
                     ViewBag.Error = responseMessage.Content.ReadAsStringAsync().Result;
+                else
+                    {
+                    responseMessage = await client.GetAsync(apiBaseUrl + "/File/" + id);
+                    if (responseMessage.IsSuccessStatusCode)
+                        {
+                        responseData = responseMessage.Content.ReadAsStringAsync().Result;
+                        var documentsList = JsonConvert.DeserializeObject<ViewDataUploadFilesResult[]>(responseData);
+                        if (documentsList != null)
+                            complaint.Documents = documentsList.ToList();
+                        }
+                    }
                 }
             else
                 {

@@ -5,24 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="view-content">
-    <div class="row">
-        <div class="col-md-12">
-            <ul class="nav nav-tabs">
-
-                <li>
-                    @Html.ActionLink("Complaints List", "Index", null, null)
-                </li>
-                <li class="active"><a href="#">Complaint Details</a></li>
-            </ul>
-        </div>
-    </div>
-
-    <div class="row margin-top">
-
-        <div class="panel panel-info">
-            <div class="panel-heading"><strong>Complaint Information (@Html.DisplayFor(model => model.Dated))</strong></div>
-            <div class="panel-body panel-with-tbl">
+<div class="modal fade" id="confirm" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                <h4 class="modal-title">Complaint Details (@Html.DisplayFor(model => model.Dated))</h4>
+            </div>
+            <div class="modal-body">
                 <table class="table table-striped">
                     <tr>
                         <td><strong>Id</strong></td>
@@ -59,16 +49,10 @@
                     </tr>
                 </table>
             </div>
-            <div class="panel-footer">
-                <div class="row">
-                    <div class="col-md-12">
-                        <span class="pull-right">
-                            @Html.ActionLink("View Uploaded Documents", "Upload", new { id = Model.Id }, new { @class = "btn btn-primary" })
-                        </span>
-                    </div>
-                </div>
+            <div class="modal-footer">
+                @Html.ActionLink("View Uploaded Documents", "Upload", new { id = Model.Id }, new { @class = "btn btn-primary" })
+                <button data-dismiss="modal" type="button" class="btn btn-primary">Cancel</button>
             </div>
         </div>
     </div>
 </div>
-
