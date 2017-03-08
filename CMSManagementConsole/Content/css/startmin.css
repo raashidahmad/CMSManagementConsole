@@ -802,7 +802,7 @@ table.dataTable thead .sorting:after {
     height: 54px !important;
 }
 
-/*Changin tablet color*/
+/*Changing tabs color*/
 .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover {
     background-color: #337ab7;
     border:1px solid #2e6da4;
@@ -820,4 +820,10 @@ table.dataTable thead .sorting:after {
 .highlight-font {
     color: #337ab7;
     font-size: 11px;
+}
+
+/*Change Menu Background Colors*/
+.nav>li>a.active {
+    background: #337ab7 !important;
+    color: #fff;
 }

@@ -8,11 +8,24 @@
 
 </head>
 <body>
+
+    @functions
+    {
+        string action = HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString();
+        public string GetStatusClass(string menuItem)
+            {
+            string strClass = "";
+            if (menuItem == action)
+                strClass = "active";
+
+            return strClass;
+            }
+    }
     <div id="wrapper">
         <!-- Navigation -->
         <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
             <div class="navbar-header">
-                <a class="navbar-brand" href="#">CMS BOR</a>
+                <a class="navbar-brand" href="@Url.Action("Welcome", "Home")">CMS BOR</a>
             </div>
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -22,12 +35,12 @@
             </button>
             <!-- Top Navigation: Left Menu -->
             <ul class="nav navbar-nav navbar-left navbar-top-links">
-                <li><a href="#"><i class="fa fa-home fa-fw"></i> Home</a></li>
+                <li><a href="@Url.Action("Welcome", "Home")"><i class="fa fa-home fa-fw"></i> Home</a></li>
             </ul>
             <!-- Top Navigation: Right Menu -->
             <ul class="nav navbar-right navbar-top-links">
                 <li class="dropdown navbar-inverse">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <!--<a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-bell fa-fw"></i> <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu dropdown-alerts">
@@ -46,10 +59,11 @@
                                 <i class="fa fa-angle-right"></i>
                             </a>
                         </li>
-                    </ul>
+                    </ul>-->
                 </li>
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    @Html.ActionLink("Logout", "Logout", "Home")
+                    <!--<a class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-user fa-fw"></i> Guest User <b class="caret"></b>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
@@ -63,7 +77,7 @@
                         <li>
                             <a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
                         </li>
-                    </ul>
+                    </ul>-->
                 </li>
             </ul>
             <!-- Sidebar -->
@@ -81,33 +95,33 @@
                             </div>
                         </li>
                         <li>
-                            <a href="#" class="active"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="@Url.Action("Welcome", "Home")" class="@GetStatusClass("Home")"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-sitemap fa-fw"></i> Administration<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
+                            <ul class="nav nav-second-level" aria-expanded="true">
                                 <li>
-                                    @Html.ActionLink("Categories Manager", "Index", "Category")
+                                    @Html.ActionLink("Categories Manager", "Index", "Category", null, new { @class = GetStatusClass("Category") })
                                 </li>
                                 <li>
-                                    @Html.ActionLink("Districts Manager", "Index", "District")
+                                    @Html.ActionLink("Districts Manager", "Index", "District", null, new { @class = GetStatusClass("District") })
                                 </li>
                                 <li>
-                                    @Html.ActionLink("SDCs Manager", "Index", "SDC")
+                                    @Html.ActionLink("SDCs Manager", "Index", "SDC", null, new { @class = GetStatusClass("SDC") })
                                 </li>
                                 <li>
-                                    @Html.ActionLink("Users Manager", "Index", "User")
+                                    @Html.ActionLink("Users Manager", "Index", "User", null, new { @class = GetStatusClass("User") })
                                 </li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/Complaint/Index" class="active"><i class="fa fa-envelope-o fa-fw"></i> Complaints</a>
+                            <a href="/Complaint/Index" class="@GetStatusClass("Complaint")"><i class="fa fa-envelope-o fa-fw"></i> Complaints</a>
                         </li>
                         <li>
-                            <a href="#" class="active"><i class="fa fa-bar-chart fa-fw"></i> SDC Statistics</a>
+                            <a href="#" class=""><i class="fa fa-bar-chart fa-fw @GetStatusClass("Statistics")"></i> SDC Statistics</a>
                         </li>
                         <li>
-                            <a href="#" class="active"><i class="fa fa-user fa-fw"></i> Complainants</a>
+                            <a href="#" class=""><i class="fa fa-user fa-fw @GetStatusClass("Complainant")"></i> Complainants</a>
                         </li>
                     </ul>
                 </div>

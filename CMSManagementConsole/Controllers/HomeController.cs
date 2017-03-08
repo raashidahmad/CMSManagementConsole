@@ -1,4 +1,5 @@
-﻿using CMSManagementConsole.Models;
+﻿using CMSManagementConsole.Helpers;
+using CMSManagementConsole.Models;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -87,9 +88,17 @@ namespace CMSManagementConsole.Controllers
             return View("Login");
             }
 
+        [AuthorizationFilter]
         public ActionResult Welcome()
             {
             return View();
+            }
+
+        public ActionResult Logout()
+            {
+            Session.Clear();
+            Session.Abandon();
+            return View("Login");
             }
         
         }

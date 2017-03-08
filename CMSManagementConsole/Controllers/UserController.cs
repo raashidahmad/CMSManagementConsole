@@ -11,9 +11,11 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using PagedList;
+using CMSManagementConsole.Helpers;
 
 namespace CMSManagementConsole.Controllers
 {
+    [AuthorizationFilter]
     public class UserController : Controller
     {
         private string apiBaseUrl = "";

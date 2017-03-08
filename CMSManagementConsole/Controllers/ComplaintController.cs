@@ -11,9 +11,11 @@ using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 using PagedList;
+using CMSManagementConsole.Helpers;
 
 namespace CMSManagementConsole.Controllers
 {
+    [AuthorizationFilter]
     public class ComplaintController : Controller
     {
         private string apiBaseUrl = "";
@@ -38,6 +40,7 @@ namespace CMSManagementConsole.Controllers
 
         public async Task<ActionResult> Index(string sortOrder, string currentFilter, string searchString, int? page)
             {
+            searchString = HttpUtility.UrlDecode(searchString);
             ViewBag.CurrentSort = sortOrder;
             ViewBag.NameSortParm = String.IsNullOrEmpty(sortOrder) ? "name_asc" : "";
             if (searchString != null)
@@ -60,11 +63,12 @@ namespace CMSManagementConsole.Controllers
 
             if (searchString != null)
                 {
+                searchString = searchString.ToLower().Trim();
                 complaints = (from complaint in complaints
                               where 
-                              complaint.Complainant.ToLower().Contains(searchString.ToLower()) ||
-                              complaint.Mobile.ToLower().Contains(searchString.ToLower()) ||
-                              complaint.NIC.ToLower().Contains(searchString.ToLower())
+                              complaint.Complainant.ToLower().Contains(searchString) ||
+                              complaint.Mobile.ToLower().Contains(searchString) ||
+                              complaint.NIC.ToLower().Contains(searchString)
                               select complaint).ToList();
                 }
 
